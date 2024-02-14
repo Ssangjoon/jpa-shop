@@ -1,7 +1,9 @@
 package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
     @Id @GeneratedValue
     @Column(name = "order_id")
@@ -57,6 +60,15 @@ public class Order {
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
+
+    /*
+        비즈니스 로직이 Entity에 있다. 서비스 계층은 단순히 엔티티에 필요한 요청을 위임하는 역할을 한다.
+        이처럼 엔티티가 비즈니스 로직을 가지고 객체 지향의 특성을 적극 활용하는 것을 도메인 모델 패턴이라 한다.
+        반대로 엔티티에는 비즈니스 로직이 거의 없고 서비스 계층에서 대부분의 비즈니스 로직을 처리하는 것을 트랜잭션 스크립트 패턴 이라한다.
+
+        JPA 를 활용하며 Entity내의 데이터를 바꾸면
+        변경된 데이터를 감지하여(더티체킹) 모든 데이터를 변경한다.
+     */
 
     // == 비즈니스 로직 == //
     /**
